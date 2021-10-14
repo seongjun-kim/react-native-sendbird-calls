@@ -1,21 +1,39 @@
 # react-native-sendbird-calls
 
-React Native Sendbird Calls SDK
+React Native Sendbird Calls SDK (Android Only / iOS is in progress)
+
+## Requirements
+
+### [ Android ]
+
+[Sendbird call - Android: Requirements guide](https://sendbird.com/docs/calls/v1/android/quickstart/make-first-call#2-requirements)
 
 ## Installation
+
+NPM
 
 ```sh
 npm install react-native-sendbird-calls
 ```
 
+Yarn
+
+```sh
+yarn add react-native-sendbird-calls
+```
+
 ## Usage
 
 ```js
-import { multiply } from "react-native-sendbird-calls";
+import {
+  initSendbirdCalls,
+  authenticateUser,
+  registerPushToken,
+  addListener,
+  dial,
+} from 'react-native-sendbird-calls';
 
 // ...
-
-const result = await multiply(3, 7);
 ```
 
 ## Contributing

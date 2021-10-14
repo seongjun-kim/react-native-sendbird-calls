@@ -17,6 +17,37 @@ const SendbirdCalls = NativeModules.SendbirdCalls
       }
     );
 
-export function multiply(a: number, b: number): Promise<number> {
-  return SendbirdCalls.multiply(a, b);
+export function initSendbirdCalls(appId: String) {
+  SendbirdCalls.setAppId(appId);
+  return SendbirdCalls.init();
+}
+
+export function authenticateUser(
+  userId: String,
+  accessToken?: String,
+  onResult?: Function
+) {
+  SendbirdCalls.authenticateUser(userId, accessToken, onResult);
+}
+
+export function registerPushToken(pushToken: String, onResult?: Function) {
+  SendbirdCalls.registerPushToken(pushToken, onResult);
+}
+
+export function dial(calleeId: String) {
+  return SendbirdCalls.dial(calleeId);
+}
+
+export function addListener(
+  onEstablished?: Function,
+  onConnected?: Function,
+  onEnded?: Function,
+  onRemoteAudioSettingsChanged?: Function
+) {
+  SendbirdCalls.addListener(
+    onEstablished,
+    onConnected,
+    onEnded,
+    onRemoteAudioSettingsChanged
+  );
 }

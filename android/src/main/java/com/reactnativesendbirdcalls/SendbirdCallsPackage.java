@@ -16,7 +16,8 @@ public class SendbirdCallsPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
-        modules.add(new SendbirdCallsModule(reactContext));
+        modules.add(new RNSendbirdCalls(reactContext));
+        // If you add more native modules down the line, you can also instantiate them and add them to the list returned here.
         return modules;
     }
 
@@ -25,4 +26,5 @@ public class SendbirdCallsPackage implements ReactPackage {
     public List<ViewManager> createViewManagers(@NonNull ReactApplicationContext reactContext) {
         return Collections.emptyList();
     }
+
 }

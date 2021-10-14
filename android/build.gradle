@@ -44,10 +44,11 @@ android {
 
 repositories {
     mavenLocal()
-    maven {
-        // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
-        url("$rootDir/../node_modules/react-native/android")
-    }
+    //    maven {
+    //        // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+    //        url("$rootDir/../node_modules/react-native/android")
+    //    }
+    maven { url "https://repo.sendbird.com/public/maven" }
     google()
     mavenCentral()
     jcenter()
@@ -56,4 +57,6 @@ repositories {
 dependencies {
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
+    //    api 'com.sendbird:sendbird-calls:1.7.0'
+    implementation 'com.sendbird.sdk:sendbird-calls:1.7.0'
 }
