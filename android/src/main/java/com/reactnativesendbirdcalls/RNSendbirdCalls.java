@@ -26,8 +26,6 @@ import com.sendbird.calls.handler.DialHandler;
 import com.sendbird.calls.handler.DirectCallListener;
 import com.sendbird.calls.handler.SendBirdCallListener;
 
-import java.util.UUID;
-
 public class RNSendbirdCalls extends ReactContextBaseJavaModule
   implements LifecycleEventListener {
   private ReactApplicationContext mReactApplicationContext;
@@ -35,7 +33,7 @@ public class RNSendbirdCalls extends ReactContextBaseJavaModule
   private String userId;
   private String sendbirdAppId;
   private boolean sendbirdCallsInitDone;
-  private DirectCall call;
+  private DirectCall mDirectCall;
 
   RNSendbirdCalls(ReactApplicationContext reactContext) {
     super(reactContext);
@@ -104,47 +102,61 @@ public class RNSendbirdCalls extends ReactContextBaseJavaModule
 
   @ReactMethod
   public void addListener(Callback onEstablished, Callback onConnected, Callback onEnded, Callback onRemoteAudioSettingsChanged) {
-    SendBirdCall.addListener(UUID.randomUUID().toString(), new SendBirdCallListener() {
+    Log.i("RNSendbirdCalls", "addListener userId:" + userId);
+    SendBirdCall.addListener(userId, new SendBirdCallListener() {
+    // SendBirdCall.addListener(UUID.randomUUID().toString(), new SendBirdCallListener() {
       @Override
       public void onRinging(DirectCall call) {
-        Log.i("RNSendbirdCalls", "addListener onRinging:");
+        Log.i("RNSendbirdCalls", "addListener onRinging");
+        mDirectCall = call;
         call.setListener(new DirectCallListener() {
           @Override
           public void onEstablished(DirectCall call) {
+            Log.i("RNSendbirdCalls", "onEstablished is called successfully.");
+            mDirectCall = call;
             if (onEstablished != null) {
               onEstablished.invoke();
-              Log.i("RNSendbirdCalls", "onEstablished is called successfully.");
             }
           }
 
           @Override
           public void onConnected(DirectCall call) {
+            Log.i("RNSendbirdCalls", "onConnected is called successfully.");
             if (onEstablished != null) {
               onConnected.invoke();
-              Log.i("RNSendbirdCalls", "onConnected is called successfully.");
             }
           }
 
           @Override
           public void onEnded(DirectCall call) {
+            Log.i("RNSendbirdCalls", "onEnded is called successfully.");
             if (onEstablished != null) {
               onEnded.invoke();
-              Log.i("RNSendbirdCalls", "onEnded is called successfully.");
             }
           }
 
           @Override
           public void onRemoteAudioSettingsChanged(DirectCall call) {
+            Log.i("RNSendbirdCalls", "onRemoteAudioSettingsChanged is called successfully.");
             if (onRemoteAudioSettingsChanged != null) {
               onEnded.invoke();
-              Log.i("RNSendbirdCalls", "onRemoteAudioSettingsChanged is called successfully.");
             }
           }
         });
 
-        call.accept(new AcceptParams());
+        mDirectCall.accept(new AcceptParams());
       }
     });
+  }
+
+  @ReactMethod
+  public void acceptCall() {
+    mDirectCall.accept(new AcceptParams());
+  }
+
+  @ReactMethod
+  public void declineCall() {
+    mDirectCall.end();
   }
 
   @ReactMethod
@@ -153,9 +165,10 @@ public class RNSendbirdCalls extends ReactContextBaseJavaModule
     params.setVideoCall(false);
     params.setCallOptions(new CallOptions());
 
-    call = SendBirdCall.dial(params, new DialHandler() {
+    SendBirdCall.dial(params, new DialHandler() {
       @Override
       public void onResult(DirectCall call, SendBirdException e) {
+        Log.i("RNSendbirdCalls", "onResult e: " + e);
         if (e != null) e.printStackTrace();
         else {
           promise.resolve(true);

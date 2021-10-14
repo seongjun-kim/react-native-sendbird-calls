@@ -34,6 +34,12 @@ export function registerPushToken(pushToken: String, onResult?: Function) {
   SendbirdCalls.registerPushToken(pushToken, onResult);
 }
 
+export function acceptCall() {
+  return SendbirdCalls.acceptCall();
+}
+export function declineCall() {
+  return SendbirdCalls.declineCall();
+}
 export function dial(calleeId: String) {
   return SendbirdCalls.dial(calleeId);
 }
