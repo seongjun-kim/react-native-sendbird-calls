@@ -26,6 +26,8 @@ import com.sendbird.calls.handler.DialHandler;
 import com.sendbird.calls.handler.DirectCallListener;
 import com.sendbird.calls.handler.SendBirdCallListener;
 
+import java.util.UUID;
+
 public class RNSendbirdCalls extends ReactContextBaseJavaModule
   implements LifecycleEventListener {
   private ReactApplicationContext mReactApplicationContext;
@@ -102,8 +104,7 @@ public class RNSendbirdCalls extends ReactContextBaseJavaModule
 
   @ReactMethod
   public void addListener(Callback onEstablished, Callback onConnected, Callback onEnded, Callback onRemoteAudioSettingsChanged) {
-    Log.i("RNSendbirdCalls", "addListener userId:" + userId);
-    SendBirdCall.addListener(userId, new SendBirdCallListener() {
+    SendBirdCall.addListener(UUID.randomUUID().toString(), new SendBirdCallListener() {
       @Override
       public void onRinging(DirectCall call) {
         Log.i("RNSendbirdCalls", "addListener onRinging:");
